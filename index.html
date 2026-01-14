@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1401 Meadowbrook Blvd - ARV Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a4d2e;
+            --primary-light: #2d6a4f;
+            --accent: #d4af37;
+            --accent-light: #f0d683;
+            --text-dark: #1a1a1a;
+            --text-mid: #4a5568;
+            --text-light: #718096;
+            --bg-cream: #faf8f3;
+            --bg-white: #ffffff;
+            --border: #e2dfd8;
+            --shadow: rgba(26, 77, 46, 0.08);
+            --shadow-strong: rgba(26, 77, 46, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-cream);
+            color: var(--text-dark);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            padding: 4rem 2rem 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-30px, 30px) scale(1.1); }
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--accent);
+            color: var(--accent-light);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--bg-white);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease-out 0.3s backwards;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.4s backwards;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            border-radius: 12px;
+            animation: fadeInUp 0.8s ease-out backwards;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.5s; }
+        .stat-card:nth-child(2) { animation-delay: 0.6s; }
+        .stat-card:nth-child(3) { animation-delay: 0.7s; }
+        .stat-card:nth-child(4) { animation-delay: 0.8s; }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--bg-white);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section {
+            padding: 5rem 0;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+            animation-timeline: view();
+            animation-range: entry 0% cover 30%;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-mid);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .pricing-card {
+            background: var(--bg-white);
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px var(--shadow-strong);
+        }
+
+        .pricing-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .pricing-card.recommended {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, var(--bg-white) 0%, #fffef8 100%);
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .pricing-card.recommended::before {
+            transform: scaleX(1);
+        }
+
+        .pricing-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-card.recommended .pricing-label {
+            color: var(--accent);
+        }
+
+        .pricing-amount {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-per-sqft {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-top: 2rem;
+        }
+
+        .pricing-features li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-mid);
+            display: flex;
+            align-items: center;
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-features li::before {
+            content: '✓';
+            color: var(--primary);
+            font-weight: 700;
+            margin-right: 0.75rem;
+            font-size: 1.2rem;
+        }
+
+        .table-wrapper {
+            background: var(--bg-white);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            overflow-x: auto;
+            margin-top: 3rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        thead {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+        }
+
+        th {
+            padding: 1.25rem 1rem;
+            text-align: left;
+            color: var(--bg-white);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        th:first-child {
+            border-radius: 12px 0 0 0;
+        }
+
+        th:last-child {
+            border-radius: 0 12px 0 0;
+        }
+
+        tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: var(--bg-cream);
+        }
+
+        tbody tr.subject-property {
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.1) 0%, transparent 100%);
+            font-weight: 600;
+        }
+
+        td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-mid);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .zillow-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .zillow-link:hover {
+            color: var(--accent);
+        }
+
+        .zillow-link::after {
+            content: '→';
+            transition: transform 0.2s ease;
+        }
+
+        .zillow-link:hover::after {
+            transform: translateX(4px);
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            padding: 5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--bg-white);
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-text {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .timeline {
+            max-width: 800px;
+            margin: 3rem auto;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            background: var(--bg-white);
+            padding: 2rem;
+            border-radius: 12px;
+            width: calc(50% - 2rem);
+            box-shadow: 0 4px 15px var(--shadow);
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--shadow-strong);
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border: 4px solid var(--bg-white);
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px var(--border);
+            z-index: 2;
+        }
+
+        .timeline-week {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-activity {
+            color: var(--text-mid);
+        }
+
+        .checklist {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .checklist-item {
+            background: var(--bg-white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .checklist-item:hover {
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .checklist-item::before {
+            content: '☐';
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-right: 1rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 100%);
+            padding: 3rem;
+            border-radius: 20px;
+            margin: 4rem 0;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .highlight-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .highlight-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin: 1rem 0;
+        }
+
+        .highlight-subtext {
+            color: var(--primary);
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        footer {
+            background: var(--text-dark);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        footer p {
+            margin-bottom: 1rem;
+        }
+
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent);
+            transform-origin: left;
+            transform: scaleX(0);
+            z-index: 1000;
+            transition: transform 0.1s ease;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                flex-direction: row !important;
+            }
+
+            .timeline-content {
+                width: calc(100% - 4rem);
+                margin-left: 4rem;
+            }
+
+            .timeline-marker {
+                left: 20px;
+            }
+
+            .cta-title {
+                font-size: 2rem;
+            }
+
+            .pricing-amount {
+                font-size: 2.5rem;
+            }
+
+            .highlight-value {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scroll-indicator" id="scrollIndicator"></div>
+
+    <div class="hero">
+        <div class="hero-content">
+            <div class="badge">Property Analysis Report</div>
+            <h1>1401 Meadowbrook Blvd</h1>
+            <p class="hero-subtitle">Mount Pleasant, WI 53405 • Comprehensive ARV Analysis & Marketing Strategy</p>
+            
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="stat-label">Bedrooms</div>
+                    <div class="stat-value">3</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Bathrooms</div>
+                    <div class="stat-value">2</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Square Feet</div>
+                    <div class="stat-value">1,500</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Condition</div>
+                    <div class="stat-value" style="font-size: 1.5rem;">Renovated</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <section class="section">
+            <div class="highlight-box">
+                <div class="highlight-title">Recommended Listing Price</div>
+                <div class="highlight-value">$427,500</div>
+                <div class="highlight-subtext">$285 per square foot • Expected Sale: $420K – $435K</div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">Pricing Strategy</h2>
+                <p class="section-subtitle">Three strategic pricing options based on comparable market data and your timeline goals</p>
+            </div>
+
+            <div class="pricing-cards">
+                <div class="pricing-card">
+                    <div class="pricing-label">Conservative</div>
+                    <div class="pricing-amount">$412,500</div>
+                    <div class="pricing-per-sqft">$275 per sqft</div>
+                    <ul class="pricing-features">
+                        <li>Quick sale within 7-14 days</li>
+                        <li>Likely at or above asking</li>
+                        <li>Best for fast liquidity</li>
+                        <li>Expected: $405K – $415K</li>
+                    </ul>
+                </div>
+
+                <div class="pricing-card recommended">
+                    <div class="pricing-label">⭐ Recommended</div>
+                    <div class="pricing-amount">$427,500</div>
+                    <div class="pricing-per-sqft">$285 per sqft</div>
+                    <ul class="pricing-features">
+                        <li>Offers within 14-30 days</li>
+                        <li>Balanced approach</li>
+                        <li>Built-in negotiation room</li>
+                        <li>Expected: $420K – $435K</li>
+                    </ul>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-label">Aggressive</div>
+                    <div class="pricing-amount">$450,000</div>
+                    <div class="pricing-per-sqft">$300 per sqft</div>
+                    <ul class="pricing-features">
+                        <li>Test the high end</li>
+                        <li>Reduce after 30 days if needed</li>
+                        <li>Best if not time-sensitive</li>
+                        <li>Expected: $440K – $455K</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">Comparable Sales Analysis</h2>
+                <p class="section-subtitle">Recently sold properties in Mount Pleasant area (Last 6 months)</p>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Address</th>
+                            <th>Sale Price</th>
+                            <th>Date</th>
+                            <th>BD/BA</th>
+                            <th>Sqft</th>
+                            <th>$/Sqft</th>
+                            <th>Zip</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="subject-property">
+                            <td><strong>1401 Meadowbrook Blvd</strong></td>
+                            <td><strong>TBD</strong></td>
+                            <td>Listing</td>
+                            <td>3 / 2</td>
+                            <td>1,500</td>
+                            <td><strong>TBD</strong></td>
+                            <td>53405</td>
+                            <td>Your Property</td>
+                        </tr>
+                        <tr>
+                            <td>6059 Fox Run Ln</td>
+                            <td>$450,000</td>
+                            <td>01/09/26</td>
+                            <td>3 / 2</td>
+                            <td>1,501</td>
+                            <td>$300</td>
+                            <td>53406</td>
+                            <td><a href="https://www.zillow.com/homedetails/6059-Fox-Run-Ln-Racine-WI-53406/449132884_zpid/" target="_blank" class="zillow-link">View</a></td>
+                        </tr>
+                        <tr>
+                            <td>4218 Meachem Rd</td>
+                            <td>$449,000</td>
+                            <td>12/22/25</td>
+                            <td>3 / 2</td>
+                            <td>1,630</td>
+                            <td>$275</td>
+                            <td>53403</td>
+                            <td><a href="https://www.zillow.com/homedetails/4218-Meachem-Rd-Mount-Pleasant-WI-53403/457155191_zpid/" target="_blank" class="zillow-link">View</a></td>
+                        </tr>
+                        <tr>
+                            <td>5108 Norman St</td>
+                            <td>$355,000</td>
+                            <td>12/12/25</td>
+                            <td>3 / 2</td>
+                            <td>1,761</td>
+                            <td>$202</td>
+                            <td>53406</td>
+                            <td><a href="https://www.zillow.com/homedetails/5108-Norman-St-Racine-WI-53406/52236028_zpid/" target="_blank" class="zillow-link">View</a></td>
+                        </tr>
+                        <tr>
+                            <td>2706 Green Haze Ave</td>
+                            <td>$370,000</td>
+                            <td>12/12/25</td>
+                            <td>3 / 2</td>
+                            <td>1,754</td>
+                            <td>$211</td>
+                            <td>53406</td>
+                            <td><a href="https://www.zillow.com/homedetails/2706-Green-Haze-Ave-Racine-WI-53406/52236132_zpid/" target="_blank" class="zillow-link">View</a></td>
+                        </tr>
+                        <tr>
+                            <td>4919 Flambeau Dr</td>
+                            <td>$360,000</td>
+                            <td>12/12/25</td>
+                            <td>4 / 2</td>
+                            <td>1,750</td>
+                            <td>$206</td>
+                            <td>53406</td>
+                            <td><a href="https://www.zillow.com/homedetails/4919-Flambeau-Dr-Racine-WI-53406/52236455_zpid/" target="_blank" class="zillow-link">View</a></td>
+                        </tr>
+                        <tr>
+                            <td>3221 Kearney Ave</td>
+                            <td>$245,000</td>
+                            <td>12/17/25</td>
+                            <td>3 / 2</td>
+                            <td>1,626</td>
+                            <td>$151</td>
+                            <td>53403</td>
+                            <td><a href="https://www.zillow.com/homedetails/3221-Kearney-Ave-Mount-Pleasant-WI-53403/52243368_zpid/" target="_blank" class="zillow-link">View</a></td>
+                        </tr>
+                        <tr>
+                            <td>1517 Summerset Dr</td>
+                            <td>$275,000</td>
+                            <td>12/15/25</td>
+                            <td>3 / 2</td>
+                            <td>1,714</td>
+                            <td>$160</td>
+                            <td>53406</td>
+                            <td><a href="https://www.zillow.com/homedetails/1517-Summerset-Dr-Racine-WI-53406/70379750_zpid/" target="_blank" class="zillow-link">View</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">Marketing Timeline</h2>
+                <p class="section-subtitle">Your 10-week path from preparation to closing</p>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-week">Week 1</div>
+                        <div class="timeline-activity">Prep & Photography • Property ready to list</div>
+                    </div>
+                    <div class="timeline-marker"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-week">Week 2</div>
+                        <div class="timeline-activity">Launch & Marketing • MLS active, open house weekend</div>
+                    </div>
+                    <div class="timeline-marker"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-week">Weeks 2-3</div>
+                        <div class="timeline-activity">Showings & Offers • Expect offers if priced right</div>
+                    </div>
+                    <div class="timeline-marker"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-week">Week 4</div>
+                        <div class="timeline-activity">Under Contract • Accepted offer, inspection period</div>
+                    </div>
+                    <div class="timeline-marker"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-week">Week 5-6</div>
+                        <div class="timeline-activity">Inspection & Appraisal • Clear contingencies</div>
+                    </div>
+                    <div class="timeline-marker"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-week">Week 7-9</div>
+                        <div class="timeline-activity">Loan Processing • Buyer's financing processing</div>
+                    </div>
+                    <div class="timeline-marker"></div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-week">Week 10</div>
+                        <div class="timeline-activity">Closing • Transfer ownership, receive funds 🎉</div>
+                    </div>
+                    <div class="timeline-marker"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">Pre-Listing Checklist</h2>
+                <p class="section-subtitle">Essential steps to maximize your property value</p>
+            </div>
+
+            <div class="checklist">
+                <div class="checklist-item">Choose a listing agent</div>
+                <div class="checklist-item">Schedule professional photography</div>
+                <div class="checklist-item">Complete staging/decluttering</div>
+                <div class="checklist-item">Deep clean entire property</div>
+                <div class="checklist-item">Enhance curb appeal</div>
+                <div class="checklist-item">Gather all documentation</div>
+                <div class="checklist-item">Order pre-listing inspection</div>
+                <div class="checklist-item">Make minor repairs/touch-ups</div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">Expected Net Proceeds</h2>
+                <p class="section-subtitle">Financial breakdown at $427,500 sale price</p>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Amount</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Gross Sale Price</strong></td>
+                            <td><strong>$427,500</strong></td>
+                            <td>List price</td>
+                        </tr>
+                        <tr>
+                            <td>Real Estate Commission (6%)</td>
+                            <td>-$25,650</td>
+                            <td>3% buyer + 3% listing agent</td>
+                        </tr>
+                        <tr>
+                            <td>Title Insurance</td>
+                            <td>-$1,500</td>
+                            <td>Varies by title company</td>
+                        </tr>
+                        <tr>
+                            <td>Closing/Attorney Fees</td>
+                            <td>-$800</td>
+                            <td>Legal fees</td>
+                        </tr>
+                        <tr>
+                            <td>Transfer Tax</td>
+                            <td>-$1,500</td>
+                            <td>~0.35% in Wisconsin</td>
+                        </tr>
+                        <tr>
+                            <td>Prorated Property Taxes</td>
+                            <td>-$1,000</td>
+                            <td>Depends on closing date</td>
+                        </tr>
+                        <tr>
+                            <td>Home Warranty (optional)</td>
+                            <td>-$500</td>
+                            <td>If offered to buyer</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total Selling Costs</strong></td>
+                            <td><strong>-$30,950</strong></td>
+                            <td><strong>~7.2% of sale price</strong></td>
+                        </tr>
+                        <tr class="subject-property">
+                            <td><strong>NET PROCEEDS</strong></td>
+                            <td><strong>$396,550</strong></td>
+                            <td><strong>Before mortgage payoff</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <div class="cta-section">
+        <div class="cta-content">
+            <h2 class="cta-title">Why This Strategy Works</h2>
+            <p class="cta-text">
+                Your property is positioned to sell for <strong>$420,000-$435,000</strong> within 30-45 days when properly marketed. 
+                The recent comparable sale at $450K validates your pricing strategy, and your fully renovated condition 
+                gives you a competitive edge in the Mount Pleasant market.
+            </p>
+            <div style="margin-top: 3rem;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; text-align: left;">
+                    <div>
+                        <div style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">5%</div>
+                        <div style="opacity: 0.9;">Below highest comp</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">15-30</div>
+                        <div style="opacity: 0.9;">Days on market</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">$396K</div>
+                        <div style="opacity: 0.9;">Expected net proceeds</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p><strong>1401 Meadowbrook Blvd, Mount Pleasant, WI 53405</strong></p>
+            <p>Comprehensive ARV Analysis & Marketing Plan</p>
+            <p style="margin-top: 2rem; opacity: 0.5;">Generated: January 13, 2026</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll indicator
+        window.addEventListener('scroll', () => {
+            const scrollIndicator = document.getElementById('scrollIndicator');
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollPercentage = (scrollTop / (documentHeight - windowHeight)) * 100;
+            scrollIndicator.style.transform = `scaleX(${scrollPercentage / 100})`;
+        });
+
+        // Add intersection observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Interactive checklist
+        document.querySelectorAll('.checklist-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.style.opacity = this.style.opacity === '0.5' ? '1' : '0.5';
+                this.style.textDecoration = this.style.textDecoration === 'line-through' ? 'none' : 'line-through';
+                this.style.borderColor = this.style.borderColor === 'rgb(26, 77, 46)' ? 'var(--border)' : 'var(--primary)';
+            });
+        });
+    </script>
+</body>
+</html>
